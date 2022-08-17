@@ -21,6 +21,7 @@ public class ScreenFit : MonoBehaviour
     {
         scaler = this.GetComponent<CanvasScaler>();
         Debug.Log("屏幕大小: " + Screen.width + " " + Screen.height);
+        Debug.Log("屏幕安全大小" + Screen.safeArea.x + " " + Screen.safeArea.y + " " + Screen.safeArea.width + " " + Screen.safeArea.height);
         RectTransform rectTransform = bg.GetComponent<RectTransform>();
         canvasRect = this.GetComponent<RectTransform>();
 
@@ -42,5 +43,26 @@ public class ScreenFit : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnGUI()
+    {
+        GL.LoadOrtho();
+        GL.Color(Color.red);
+        GL.Begin(GL.LINES);
+        GL.Vertex3(Screen.safeArea.x / Screen.width, Screen.safeArea.y / Screen.height, 0);
+        GL.Vertex3(Screen.safeArea.x / Screen.width, Screen.safeArea.y / Screen.height + Screen.safeArea.height / Screen.height, 0);
+
+
+        GL.Vertex3(Screen.safeArea.x / Screen.width, Screen.safeArea.y / Screen.height + Screen.safeArea.height / Screen.height, 0);
+        GL.Vertex3(Screen.safeArea.x / Screen.width + Screen.safeArea.width / Screen.width, Screen.safeArea.y / Screen.height + Screen.safeArea.height / Screen.height, 0);
+
+        GL.Vertex3(Screen.safeArea.x / Screen.width + Screen.safeArea.width / Screen.width, Screen.safeArea.y / Screen.height + Screen.safeArea.height / Screen.height, 0);
+        GL.Vertex3(Screen.safeArea.x / Screen.width + Screen.safeArea.width / Screen.width, Screen.safeArea.y / Screen.height, 0);
+
+        GL.Vertex3(Screen.safeArea.x / Screen.width + Screen.safeArea.width / Screen.width, Screen.safeArea.y / Screen.height, 0);
+        GL.Vertex3(Screen.safeArea.x / Screen.width, Screen.safeArea.y / Screen.height, 0);
+
+        GL.End();
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class AnimatorTest : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,5 +14,10 @@ public class Test : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void TestRun(string receiver)
+    {
+        Debug.Log(receiver);
     }
 }
