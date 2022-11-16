@@ -57,6 +57,26 @@ namespace PathCreation {
             CreateBezier (centre, defaultIs2D);
         }
 
+        public void ReloadBezierPath(BezierPathSaveData data, int pathId){
+            if (_bezierPath != null) {
+                _bezierPath.OnModified -= BezierPathEdited;
+            }
+
+            _bezierPath = new BezierPath(data);
+
+            _bezierPath.OnModified += BezierPathEdited;
+            vertexPathUpToDate = false;
+
+            if (bezierOrVertexPathModified != null) {
+                bezierOrVertexPathModified ();
+            }
+            if (bezierCreated != null) {
+                bezierCreated ();
+            }
+
+            _bezierPath.Id = pathId;
+        }
+
         void CreateBezier (Vector3 centre, bool defaultIs2D = false) {
             if (_bezierPath != null) {
                 _bezierPath.OnModified -= BezierPathEdited;

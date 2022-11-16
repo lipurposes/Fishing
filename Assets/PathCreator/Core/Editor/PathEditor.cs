@@ -33,14 +33,17 @@ namespace PathCreationEditor {
         // References:
         PathCreator creator;
         Editor globalDisplaySettingsEditor;
+        Editor bezierPathSavedEditor;
         ScreenSpacePolyLine screenSpaceLine;
         ScreenSpacePolyLine.MouseInfo pathMouseInfo;
         GlobalDisplaySettings globalDisplaySettings;
+        BezierPathsSaved bezierPathSaved;
         PathHandle.HandleColours splineAnchorColours;
         PathHandle.HandleColours splineControlColours;
         Dictionary<GlobalDisplaySettings.HandleType, Handles.CapFunction> capFunctions;
         ArcHandle anchorAngleHandle = new ArcHandle ();
         VertexPath normalsVertexPath;
+        string pathFileName = @"Assets/Paths/BezierPathsSaved.asset";
 
         // State variables:
         int selectedSegmentIndex;
@@ -76,6 +79,22 @@ namespace PathCreationEditor {
             }
 
             Undo.RecordObject (creator, "Path settings changed");
+            
+            CreateCachedEditor (bezierPathSaved, null, ref bezierPathSavedEditor);
+            bezierPathSavedEditor.OnInspectorGUI ();
+            int id = EditorGUILayout.IntField (new GUIContent ("PathId"), bezierPath.Id);
+            if(id != bezierPath.Id && bezierPathSaved.ContainsPath(id)){
+                Undo.RecordObject (creator, "Reload Path");
+                data.ReloadBezierPath(bezierPathSaved.GetPathById(id), id);
+                creator.transform.position = bezierPathSaved.GetPathById(id).centerPoint;
+                EditorApplication.QueuePlayerLoopUpdate ();
+            }
+            EditorGUILayout.LabelField(pathFileName);
+            if (GUILayout.Button ("Save Path")) {
+                bezierPath.Id = bezierPathSaved.SavePath(bezierPath, creator.transform.position, bezierPath.Id);
+                EditorUtility.SetDirty(bezierPathSaved);
+                UnityEditor.AssetDatabase.SaveAssets();
+            }
 
             // Draw Bezier and Vertex tabs
             int tabIndex = GUILayout.Toolbar (data.tabIndex, tabNames);
@@ -642,6 +661,7 @@ namespace PathCreationEditor {
             Undo.undoRedoPerformed += OnUndoRedo;
 
             LoadDisplaySettings ();
+            bezierPathSaved = BezierPathsSaved.Load(pathFileName);
             UpdateGlobalDisplaySettings ();
             ResetState ();
             SetTransformState (true);
