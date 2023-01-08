@@ -43,7 +43,7 @@ namespace PathCreationEditor {
         Dictionary<GlobalDisplaySettings.HandleType, Handles.CapFunction> capFunctions;
         ArcHandle anchorAngleHandle = new ArcHandle ();
         VertexPath normalsVertexPath;
-        string pathFileName = @"Assets/Paths/BezierPathsSaved.asset";
+        string pathFileName = @"Assets/Resources/Paths/BezierPathsSaved.asset";
 
         // State variables:
         int selectedSegmentIndex;

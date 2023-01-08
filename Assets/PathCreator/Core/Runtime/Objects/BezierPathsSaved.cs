@@ -45,7 +45,7 @@ namespace PathCreation
     {
 
         [SerializeField]
-        List<int> savedPathIds = new List<int> {};
+        public List<int> savedPathIds = new List<int> {};
 
         [SerializeField, HideInInspector]
         List<BezierPathSaveData> paths = new List<BezierPathSaveData>{};
