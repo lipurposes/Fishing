@@ -52,20 +52,14 @@ namespace PathCreation
         Dictionary<int, BezierPathSaveData> allPaths = new Dictionary<int, BezierPathSaveData>();
         public int SavePath(BezierPath path, Vector3 centerPoint, int id = -1)
         {
-            if (allPaths.ContainsKey(id))
-            {
-                BezierPathSaveData data = new BezierPathSaveData(path, centerPoint);
-                allPaths[id] = data;
-            }
-            else
-            {
-                if (id == -1)
-                {
-                    id = allPaths.Count;
-                }
+            if(id < 0){
+                id = allPaths.Count;
                 BezierPathSaveData data = new BezierPathSaveData(path, centerPoint);
                 allPaths[id] = data;
                 savedPathIds.Add(id);
+            }else if(allPaths.ContainsKey(id)){
+                BezierPathSaveData data = new BezierPathSaveData(path, centerPoint);
+                allPaths[id] = data;
             }
             return id;
         }

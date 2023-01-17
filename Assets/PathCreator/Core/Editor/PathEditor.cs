@@ -88,6 +88,8 @@ namespace PathCreationEditor {
                 data.ReloadBezierPath(bezierPathSaved.GetPathById(id), id);
                 creator.transform.position = bezierPathSaved.GetPathById(id).centerPoint;
                 EditorApplication.QueuePlayerLoopUpdate ();
+            }else{
+                bezierPath.Id = id;
             }
             EditorGUILayout.LabelField(pathFileName);
             if (GUILayout.Button ("Save Path")) {
